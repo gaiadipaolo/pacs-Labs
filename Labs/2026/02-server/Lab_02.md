@@ -128,6 +128,7 @@ In `ls /` you find, among others:
   * `/usr/include` (check `echo $mkEigenInc` in pacs env)
   * `/usr/lib` (check `echo $mkTbbLib` in pacs env)
 * `/bin` binaries, see also `ls / -l | grep bin`
+* `/opt` optional software packages (local FS)
 
 ---
 
@@ -371,10 +372,10 @@ qsub -I -q cpu -l select=1:ncpus=6:mpiprocs=2:host=cpu04
 
 ---
 ## 9. Exercise: pacs-labs (HPC cluster workflow)
-### 2. Move into `/local_scratch` and clone pacs-labs
+### 2. Move into `/scratch_local` and clone pacs-labs
 
 ```bash
-cd /local_scratch
+cd /scratch_local
 df -h .
 mkdir $(whoami)
 cd $(whoami)
