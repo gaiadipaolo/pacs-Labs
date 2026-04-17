@@ -20,6 +20,23 @@ struct DFun
 {
   double operator () (double x) const  {return 3*x*x+5;}
 };
+/* 
+// VERSION WITH FUNCTIONS
+double fun (const double & x) {return x*x*x + 5*x + 3;}
+double dfun (const double & x) {return 3*x*x + 5;}
+*/
+
+/*
+// VERSION WITH STRUCTS
+// better if the functions are complicated, with many variables
+struct Fun{
+  double operator () (double & x){return x*x*x + 5*x +3};
+}
+
+struct DFun{
+  double operator () (double & x){return 3*x*x + 5};
+}
+// */
 
 
 int
@@ -40,6 +57,26 @@ main(int argc, char **argv)
   std::cout << solver.get_result () << std::endl;
   std::cout << solver.get_residual () << std::endl;
   std::cout << solver.get_iter () << std::endl;
+
+  /*
+  // VERSION USING LAMBDAS (faster)
+  auto fun[](const double & x) -> double {return x*x*x + 5*x +3;};
+  auto dfun[](const double & x) -> double {return 3*x*x + 5;};
+  */
+
+  /*
+  // STRUCTS
+  Fun fun;
+  DFun dfun;
+  */
+
+  NewtonSolver solver(fun, dfun);
+
+  solver.solve(0.);
+
+  std::cout<<solver.get_result()<<std::endl;
+  std::cout<<solver.get_residual()<<std::endl;
+  std::cout<<solver.get_iter()<<std::endl;
 
   return 0;
 }

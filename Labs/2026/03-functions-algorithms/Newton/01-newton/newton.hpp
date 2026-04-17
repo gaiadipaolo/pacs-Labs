@@ -82,6 +82,9 @@ public:
 private:
   std::function<double(const double &)> m_fun; //const double & could have been double
   std::function<double(const double &)> m_dfun; // double m_dfun (const double & x) { return 3*x*x+5;}
+  //these fuctions take as input a reference to double and return a double
+  std::function<double(const double &)> m_fun;
+  std::function<double(const double &)> m_dfun;
 
   const unsigned int m_n_max_it;
   const double       m_tol_fun;

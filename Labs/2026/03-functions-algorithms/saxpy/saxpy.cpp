@@ -1,13 +1,13 @@
-// compile with g++ -std=c++20 -O3 saxpy.cpp -ltbb -o saxpy
+// compile with g++ -std=c++20 -O3 saxpy.cpp -ltbb -o saxpy (or -DUSEBOOST)
 // run with ./saxpy [size]
 #include <algorithm>
-#include <chrono>
-#include <execution>
+#include <chrono> //to compute bandwidth (measure of velocity/flow, how much data we are transferring)
+#include <execution> //add if we want to run in parallel
 #include <iostream>
 #include <string>
 #include <vector>
 
-#ifdef USE_BOOST
+#ifdef USE_BOOST 
   #include <boost/iterator/counting_iterator.hpp>
 #else
   #include <ranges>
@@ -41,11 +41,11 @@ int main(int argc, char** argv)
   }
 
   // ----------------------------------
-  // SAXPY lambda
+  // SAXPY lambda (S=single precision)
   // ----------------------------------
   auto saxpy = [xp = x.data(), yp = y.data(), a](idx_t i)
   {
-    yp[i] += a * xp[i];
+    yp[i] += a * xp[i]; // SAXPY y = y + a * x
   };
 
   // ----------------------------------
@@ -68,15 +68,16 @@ int main(int argc, char** argv)
   auto start = clock_t::now();
 
   for (int it = 0; it < nit; ++it)
-    std::for_each(std::execution::par_unseq, first, last, saxpy);
+    std::for_each(std::execution::par_unseq, first, last, saxpy); //par_unseq parallel execution policy
 
   double seconds = std::chrono::duration<double>(clock_t::now() - start).count();
 
   // ----------------------------------
-  // Bandwidth computation
-  // x read + y read + y write = 3n
+  // Bandwidth computation (how many objects we are working on)
+  // y = y + a*x
+  // x read + y read + y write = 3n (3 times the length of the vector)
   // ----------------------------------
-  double gigabytes = static_cast<double>((3 * n) * sizeof(real_t) * nit) / 1.e9;
+  double gigabytes = static_cast<double>((3 * n) * sizeof(real_t) * nit) / 1.e9; 
 
   std::cout << "Bandwidth [GB/s]: " << gigabytes / seconds << std::endl;
 

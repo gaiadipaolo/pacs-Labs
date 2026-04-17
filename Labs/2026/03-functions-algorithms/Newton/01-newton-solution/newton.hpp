@@ -9,13 +9,14 @@
 class NewtonSolver
 {
 public:
-  NewtonSolver(const std::function<double(const double &)> &fun_,
-                const std::function<double(const double &)> &dfun_,
+// constructor
+  NewtonSolver(const std::function<double(const double &)> &fun_, //function
+                const std::function<double(const double &)> &dfun_, //derivative
                 const unsigned int                           n_max_it_ = 100,
                 const double tol_fun_ = std::numeric_limits<double>::epsilon() *
-                                        1000.0,
+                                        1000.0, //tolerance on the function (y)
                 const double tol_x_ = std::numeric_limits<double>::epsilon() *
-                                      1000.0)
+                                      1000.0) //tolerance on x
     : m_fun(fun_)
     , m_dfun(dfun_)
     , m_n_max_it(n_max_it_)
@@ -80,6 +81,7 @@ public:
   };
 
 private:
+  //these fuctions take as input a reference to double and return a double
   std::function<double(const double &)> m_fun;
   std::function<double(const double &)> m_dfun;
 
