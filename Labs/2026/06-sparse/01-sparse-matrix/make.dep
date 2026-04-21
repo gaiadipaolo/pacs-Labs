@@ -1,0 +1,2 @@
+main.o: main.cpp sparse_matrix.hpp
+sparse_matrix.o: sparse_matrix.cpp sparse_matrix.hpp
